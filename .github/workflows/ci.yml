@@ -29,7 +29,9 @@ jobs:
           sed -i -e "/^# jq Version$/{n;d;}" README.md
           sed -i -e "/^# jq Version$/a $JQ_VERSION" README.md
           git add README.md
+          set +e
           git commit -m "Bump version $JQ_VERSION from GitHub Actions"
+          set -e
           git push origin
       - name: Create Release
         uses: actions/create-release@v1
