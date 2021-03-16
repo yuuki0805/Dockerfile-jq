@@ -5,4 +5,4 @@ Dockerfile repo for jq command
 alpine:latest
 
 # jq Version
-0.0
+1.6-r1
