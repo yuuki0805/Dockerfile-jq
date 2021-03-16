@@ -38,7 +38,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         with:
-          tag_name: ${{ $JQ_VERSION }}
-          release_name: Release ${{ $JQ_VERSION}}
+          tag_name: ${{ env.JQ_VERSION }}
+          release_name: Release ${{ env.JQ_VERSION}}
           draft: false
           prerelease: false
