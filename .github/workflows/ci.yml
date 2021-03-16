@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - name: Apk version
+        run: |
+          apk update
+          apk add git
+          echo "JQ_VERSION=$(apk search -x jq | sed -e 's/jq\-//g')" >> $GITHUB_ENV
+      - name: Set env
+        run: |
+          echo $JQ_VERSION
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup git
+        run: |
+          git config push.default current
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+      - name: Push Tag
+        run: |
+          set -e
+          sed -i -e "/^# jq Version$/{n;d;}" README.md
+          sed -i -e "/^# jq Version$/a $JQ_VERSION" README.md
+          git add README.md
+          set +e
+          git commit -m "Bump version $JQ_VERSION from GitHub Actions"
+          git tag -a $JQ_VERSION -m "Release $JQ_VERSION"
+          git push origin --tags
+          set -e
+          git push origin
